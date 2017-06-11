@@ -244,6 +244,7 @@ LOCAL_SHARED_LIBRARIES := \
 	libhardware \
 	libtinyalsa \
 	libtinycompress \
+	libaudio-ril \
 	libaudioroute \
 	libdl \
 	libhardware \

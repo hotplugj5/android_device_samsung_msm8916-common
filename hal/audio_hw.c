@@ -3698,6 +3698,12 @@ static int adev_close(hw_device_t *device)
     if (!adev)
         return 0;
 
+    /* open connection to SecRil */
+    if (SecRilClose())
+        ALOGE("%s: SecRilClose: Ril connection close failed", __func__);
+    else
+        ALOGV("%s: SecRilClose: Ril connection closed", __func__);
+
     pthread_mutex_lock(&adev_init_lock);
 
     if ((--audio_device_ref_count) == 0) {
@@ -3889,6 +3895,12 @@ static int adev_open(const hw_module_t *module, const char *name,
         adev_verify_devices(adev);
 
     pthread_mutex_unlock(&adev_init_lock);
+
+    /* open connection to SecRil */
+    if (SecRilOpen())
+        ALOGE("%s: SecRilOpen: Ril connection open failed", __func__);
+    else
+        ALOGV("%s: SecRilOpen: Ril connection opened", __func__);
 
     ALOGV("%s: exit", __func__);
     return 0;
