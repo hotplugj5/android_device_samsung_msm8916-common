@@ -586,6 +586,10 @@ int voice_extn_compress_voip_start_output_stream(struct stream_out *out)
         goto error;
     }
 
+    /* values to pass are unclear */
+    //Voip_setRx(48000, *(_DWORD *)(voip_config + 4), 2, *(_DWORD *)voip_config);
+    //Voip_setRxHandle(*(_DWORD *)(out + 156));
+
 error:
     ALOGV("%s: exit: status(%d)", __func__, ret);
     return ret;
@@ -612,6 +616,10 @@ int voice_extn_compress_voip_start_input_stream(struct stream_in *in)
     ret = voip_start_call(adev, &in->config);
     in->pcm = voip_data.pcm_tx;
 
+    /* values to pass are unclear */
+    //Voip_setTx(*(_DWORD *)(voip_config + 4), *(_DWORD *)(in + 76), *(_DWORD *)voip_config, v8);
+    //Voip_setTxHandle(*(_DWORD *)(in + 108));
+
 error:
     ALOGV("%s: exit: status(%d)", __func__, ret);
     return ret;
@@ -629,6 +637,9 @@ int voice_extn_compress_voip_close_output_stream(struct audio_stream *stream)
         ret = voip_stop_call(adev);
         voip_data.out_stream = NULL;
         out->pcm = NULL;
+    }
+    if (!voip_data.in_stream_count) {
+        Voip_stop();
     }
 
     ALOGV("%s: exit: status(%d)", __func__, ret);
@@ -671,6 +682,9 @@ int voice_extn_compress_voip_close_input_stream(struct audio_stream *stream)
        voip_data.in_stream_count--;
        status = voip_stop_call(adev);
        in->pcm = NULL;
+    }
+    if (!voip_data.in_stream_count) {
+        Voip_stop();
     }
 
     ALOGV("%s: exit: status(%d)", __func__, status);

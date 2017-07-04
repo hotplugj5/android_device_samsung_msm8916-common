@@ -34,6 +34,11 @@
 #include "platform_api.h"
 #include "audio_extn.h"
 
+/* Set the realcall status.
+ * passing 1 sets to on, 0 to off.
+ */
+void Voip_setRealCall(int state);
+
 struct pcm_config pcm_config_voice_call = {
     .channels = 1,
     .rate = 8000,
@@ -379,6 +384,8 @@ int voice_start_call(struct audio_device *adev)
     }
     adev->voice.in_call = true;
 
+    Voip_setRealCall(1);
+
     return ret;
 }
 
@@ -391,6 +398,8 @@ int voice_stop_call(struct audio_device *adev)
     if (ret == -ENOSYS) {
         ret = voice_stop_usecase(adev, USECASE_VOICE_CALL);
     }
+
+    Voip_setRealCall(0);
 
     return ret;
 }

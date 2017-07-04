@@ -3202,6 +3202,16 @@ static int adev_set_parameters(struct audio_hw_device *dev, const char *kvpairs)
             adev->screen_off = true;
     }
 
+    ret = str_parms_get_str(parms, "realcall", value, sizeof(value));
+    if ( ret >= 0 ) {
+        if (!strncmp(value, "on", 2)) {
+            Voip_setRealCall(1);
+        }
+        else if (!strncmp(value, "off", 3)) {
+            Voip_setRealCall(0);
+        }
+    }
+
     ret = str_parms_get_int(parms, "rotation", &val);
     if (ret >= 0) {
         bool reverse_speakers = false;
@@ -3353,6 +3363,8 @@ static int adev_set_mode(struct audio_hw_device *dev, audio_mode_t mode)
             voice_stop_call(adev);
             adev->current_call_output = NULL;
         }
+	/* check if sec audo hal and stock hal use the same modes */
+	Voip_setMode(mode);
     }
     pthread_mutex_unlock(&adev->lock);
     return 0;
@@ -3716,6 +3728,10 @@ static int adev_close(hw_device_t *device)
         adev = NULL;
     }
     pthread_mutex_unlock(&adev_init_lock);
+
+    /* proper invocation unkown, set to 0 for now */
+    Voip_destroy(0);
+
     return 0;
 }
 
@@ -3887,6 +3903,9 @@ static int adev_open(const hw_module_t *module, const char *name,
 
     if (k_enable_extended_precision)
         adev_verify_devices(adev);
+
+    /* samsung resampler open */
+    Voip_create();
 
     pthread_mutex_unlock(&adev_init_lock);
 
