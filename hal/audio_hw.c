@@ -3729,8 +3729,7 @@ static int adev_close(hw_device_t *device)
     }
     pthread_mutex_unlock(&adev_init_lock);
 
-    /* proper invocation unkown, set to 0 for now */
-    Voip_destroy(0);
+    Voip_destroy();
 
     return 0;
 }
