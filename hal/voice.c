@@ -384,7 +384,7 @@ int voice_start_call(struct audio_device *adev)
     }
     adev->voice.in_call = true;
 
-    Voip_setRealCall(1);
+    //Voip_setRealCall(1);
 
     return ret;
 }
@@ -399,7 +399,7 @@ int voice_stop_call(struct audio_device *adev)
         ret = voice_stop_usecase(adev, USECASE_VOICE_CALL);
     }
 
-    Voip_setRealCall(0);
+    //Voip_setRealCall(0);
 
     return ret;
 }
