@@ -3206,9 +3206,11 @@ static int adev_set_parameters(struct audio_hw_device *dev, const char *kvpairs)
     if ( ret >= 0 ) {
         if (!strncmp(value, "on", 2)) {
             Voip_setRealCall(1);
+	    ALOGE("RealCall enabled");
         }
         else if (!strncmp(value, "off", 3)) {
             Voip_setRealCall(0);
+	    ALOGE("RealCall disabled");
         }
     }
 
