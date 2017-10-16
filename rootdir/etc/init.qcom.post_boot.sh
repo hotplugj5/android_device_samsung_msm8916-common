@@ -198,6 +198,7 @@ case "$target" in
                 echo 1 > /sys/devices/system/cpu/cpu0/online
                 echo "interactive" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
                 echo 200000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+                echo 1401600 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
                 # enable thermal core_control now
                 echo 1 > /sys/module/msm_thermal/core_control/enabled
 
@@ -215,6 +216,12 @@ case "$target" in
                 echo 1 > /sys/devices/system/cpu/cpu2/online
                 echo 1 > /sys/devices/system/cpu/cpu3/online
                 echo 1 > /sys/devices/system/cpu/cpu4/online
+
+                # Hotplug and gpu
+                echo 4 > /sys/kernel/msm_mpdecision/conf/max_cpus_online
+                echo 64 > /sys/kernel/msm_mpdecision/conf/delay
+		echo "simple_ondemand" > /sys/class/devfreq/1c00000.qcom,kgsl-3d0/governor
+		echo 0 /sys/block/mmcblk0/queue/add_random
             ;;
         esac
 
@@ -235,6 +242,7 @@ case "$target" in
                 echo 1 > /sys/devices/system/cpu/cpu0/online
                 echo "interactive" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
                 echo 200000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+                echo 1363200 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
                 # enable thermal core_control now
                 echo 1 > /sys/module/msm_thermal/core_control/enabled
 
